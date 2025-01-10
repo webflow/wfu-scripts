@@ -1,20 +1,13 @@
 {
-  "name": "@finsweet/developer-starter",
+  "name": "@webflow/wfu-scripts",
   "version": "0.0.0",
-  "description": "Developer starter template for Finsweet projects.",
-  "homepage": "https://github.com/finsweet/developer-starter#readme",
+  "description": "Code components for Webflow University.",
+  "homepage": "https://university.webflow.com",
   "license": "ISC",
   "keywords": [],
   "author": {
-    "name": "Finsweet",
-    "url": "https://finsweet.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/finsweet/developer-starter.git"
-  },
-  "bugs": {
-    "url": "https://github.com/finsweet/developer-starter/issues"
+    "name": "Webflow",
+    "url": "https://webflow.com/"
   },
   "type": "module",
   "main": "src/index.ts",

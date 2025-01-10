@@ -26,8 +26,6 @@ export class MultipleChoiceQuiz {
     this.incorrectWrapperElement = quizElement.children[2] as HTMLElement;
     this.quizParentElement = quizElement.parentElement;
 
-    console.log(this.quizElement);
-
     // Initialize the quiz
     this.setup();
   }
@@ -73,10 +71,8 @@ export class MultipleChoiceQuiz {
     const oneIndexedSelectedAnswer = selectedAnswerIndex + 1;
 
     if (oneIndexedSelectedAnswer === this.answer) {
-      console.log('Correct!');
       this.showFeedback(true);
     } else {
-      console.log('Incorrect!');
       this.showFeedback(false);
     }
   }

@@ -1,7 +1,7 @@
-import { greetUser } from '$utils/greet';
+import { MultipleChoiceQuiz } from '$components/mc-quiz/mc-quiz';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  const name = 'John Doe';
-  greetUser(name);
+  // Initialize all quizzes on the page
+  MultipleChoiceQuiz.initializeAll();
 });

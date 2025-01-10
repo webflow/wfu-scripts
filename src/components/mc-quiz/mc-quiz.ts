@@ -38,10 +38,6 @@ export class MultipleChoiceQuiz {
       return;
     }
 
-    // Hide feedback elements initially
-    this.correctWrapperElement.style.display = 'none';
-    this.incorrectWrapperElement.style.display = 'none';
-
     // Attach event listener
     this.submitButton?.addEventListener('click', () => this.checkAnswer());
   }
@@ -79,14 +75,14 @@ export class MultipleChoiceQuiz {
 
   private showFeedback(isCorrect: boolean): void {
     // Show the correct or incorrect wrapper based on the answer
-    this.questionWrapperElement.style.display = 'none';
-    this.correctWrapperElement.style.display = isCorrect ? 'block' : 'none';
-    this.incorrectWrapperElement.style.display = isCorrect ? 'none' : 'block';
+    this.questionWrapperElement.setAttribute('wf-cloak', '1');
 
     if (this.quizParentElement) {
       if (isCorrect) {
+        this.correctWrapperElement.removeAttribute('wf-cloak');
         this.quizParentElement.classList.add(MultipleChoiceQuiz.CORRECT_ANSWER_CLASS_COMBO);
       } else {
+        this.incorrectWrapperElement.removeAttribute('wf-cloak');
         this.quizParentElement.classList.add(MultipleChoiceQuiz.INCORRECT_ANSWER_CLASS_COMBO);
       }
     }

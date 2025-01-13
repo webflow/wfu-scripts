@@ -71,6 +71,7 @@
       }
     }
     static initializeAll() {
+      console.log("Initializing all quizzes on the page");
       const quizzes = document.querySelectorAll(
         `[${_MultipleChoiceQuiz.ATTRIBUTE_NAME}]`
       );
@@ -79,9 +80,12 @@
   };
 
   // src/index.ts
-  window.Webflow ||= [];
-  window.Webflow.push(() => {
-    MultipleChoiceQuiz.initializeAll();
-  });
+  if (!window.__wfuScriptsLoaded) {
+    window.__wfuScriptsLoaded = true;
+    window.Webflow ||= [];
+    window.Webflow.push(() => {
+      MultipleChoiceQuiz.initializeAll();
+    });
+  }
 })();
 //# sourceMappingURL=index.js.map

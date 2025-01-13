@@ -89,6 +89,7 @@ export class MultipleChoiceQuiz {
   }
 
   static initializeAll(): void {
+    console.log('Initializing all quizzes on the page');
     const quizzes = document.querySelectorAll<HTMLElement>(
       `[${MultipleChoiceQuiz.ATTRIBUTE_NAME}]`
     );

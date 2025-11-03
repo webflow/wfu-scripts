@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 
+import { initTabMenuScrolling } from './session-tabs';
 import {
   formatTime,
   getNextOccurrence,
@@ -242,7 +243,11 @@ function initProEvents(): void {
 
 // Run when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initProEvents);
+  document.addEventListener('DOMContentLoaded', () => {
+    initProEvents();
+    initTabMenuScrolling();
+  });
 } else {
   initProEvents();
+  initTabMenuScrolling();
 }

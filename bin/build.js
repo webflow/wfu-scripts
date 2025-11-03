@@ -17,18 +17,24 @@ const SERVE_PORT = 3000;
 const SERVE_ORIGIN = `http://localhost:${SERVE_PORT}`;
 
 // Create context
-const context = await esbuild.context({
+const buildOptions = {
   bundle: true,
   entryPoints: ENTRY_POINTS,
   outdir: BUILD_DIRECTORY,
   minify: PRODUCTION,
   sourcemap: !PRODUCTION,
   target: PRODUCTION ? 'es2020' : 'esnext',
-  inject: LIVE_RELOAD ? ['./bin/live-reload.js'] : undefined,
   define: {
     SERVE_ORIGIN: JSON.stringify(SERVE_ORIGIN),
   },
-});
+};
+
+// Only inject live-reload in development
+if (LIVE_RELOAD) {
+  buildOptions.inject = ['./bin/live-reload.js'];
+}
+
+const context = await esbuild.context(buildOptions);
 
 // Build files in prod
 if (PRODUCTION) {

@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 
 // Debug flag - set to false in production
-export const DEBUG = true;
+export const DEBUG = false;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const debug = (...args: any[]) => {

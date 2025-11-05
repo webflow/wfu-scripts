@@ -174,8 +174,48 @@ export function getNextOccurrences(
  * 6. MM/DD/YYYY without time: "12/04/2025"
  */
 export function parseDate(dateStr: string, timezone: string): DateTime | null {
-  // First try ISO 8601 format (recommended) - e.g., "2025-12-04T15:00:00"
-  let date = DateTime.fromISO(dateStr, { zone: timezone });
+  const trimmed = dateStr.trim();
+
+  // Try ISO date format with space separator FIRST (most common format for CMS)
+  // Parse without timezone first, then explicitly set it to avoid parsing issues
+  // e.g., "2025-12-04 15:00" (24-hour with leading zeros)
+  let date: DateTime | null = null;
+
+  // Try HH:mm format first (two digit hour, two digit minutes)
+  date = DateTime.fromFormat(trimmed, 'yyyy-MM-dd HH:mm', { zone: 'utc' });
+  if (date.isValid) {
+    // Convert to the target timezone, keeping the wall-clock time
+    return date.setZone(timezone, { keepLocalTime: true });
+  }
+
+  // Try H:mm format (single digit hour, two digit minutes)
+  date = DateTime.fromFormat(trimmed, 'yyyy-MM-dd H:mm', { zone: 'utc' });
+  if (date.isValid) {
+    return date.setZone(timezone, { keepLocalTime: true });
+  }
+
+  // Try HH:m format (two digit hour, single digit minutes)
+  date = DateTime.fromFormat(trimmed, 'yyyy-MM-dd HH:m', { zone: 'utc' });
+  if (date.isValid) {
+    return date.setZone(timezone, { keepLocalTime: true });
+  }
+
+  // Try H:m format (single digit hour, single digit minutes)
+  date = DateTime.fromFormat(trimmed, 'yyyy-MM-dd H:m', { zone: 'utc' });
+  if (date.isValid) {
+    return date.setZone(timezone, { keepLocalTime: true });
+  }
+
+  // Try ISO date-only format (for until dates) - e.g., "2025-12-04"
+  date = DateTime.fromFormat(trimmed, 'yyyy-MM-dd', { zone: 'utc' });
+  if (date.isValid) {
+    return date.setZone(timezone, { keepLocalTime: true }).startOf('day');
+  }
+
+  if (!date.isValid) {
+    // Try ISO 8601 format (with T separator) - e.g., "2025-12-04T15:00:00"
+    date = DateTime.fromISO(dateStr, { zone: timezone });
+  }
 
   if (!date.isValid) {
     // Try parsing with time - formats like "December 4, 2025 3:00 PM"
@@ -198,18 +238,8 @@ export function parseDate(dateStr: string, timezone: string): DateTime | null {
   }
 
   if (!date.isValid) {
-    // Try ISO date format with space separator - e.g., "2025-12-04 15:00"
-    date = DateTime.fromFormat(dateStr, 'yyyy-MM-dd HH:mm', { zone: timezone });
-  }
-
-  if (!date.isValid) {
     // Try ISO date format with space separator and AM/PM - e.g., "2025-12-04 3:00 PM"
     date = DateTime.fromFormat(dateStr, 'yyyy-MM-dd h:mm a', { zone: timezone });
-  }
-
-  if (!date.isValid) {
-    // Try ISO date-only format (for until dates) - e.g., "2025-12-04"
-    date = DateTime.fromFormat(dateStr, 'yyyy-MM-dd', { zone: timezone });
   }
 
   if (!date.isValid) {
